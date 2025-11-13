@@ -11,6 +11,19 @@ SmartFit AI je fitnes aplikacija, ki uporabnikom omogoča sledenje vadbenim akti
 ### Predpogoji
 - Java 17 (LTS)
 - Maven 3.6+
+- PostgreSQL 15+
+
+### Nastavitev baze podatkov
+
+```bash
+psql postgres
+CREATE DATABASE smartfitai_users;
+CREATE USER smartfit WITH PASSWORD 'smartfit123';
+GRANT ALL PRIVILEGES ON DATABASE smartfitai_users TO smartfit;
+\q
+```
+
+Tabele se ustvarijo avtomatsko ob prvem zagonu.
 
 ### Gradnja
 

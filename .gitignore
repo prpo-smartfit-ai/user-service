@@ -30,3 +30,8 @@ buildNumber.properties
 # Logs
 *.log
 logs/
+
+# Database
+*.db
+*.sqlite
+/data/

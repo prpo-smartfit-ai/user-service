@@ -7,3 +7,9 @@ kumuluzee:
     http:
       port: 8080
     base-url: http://localhost:8080
+  datasources:
+    - jndi-name: jdbc/UserServiceDS
+      connection-url: jdbc:postgresql://localhost:5432/smartfitai_users
+      username: smartfit
+      password: smartfit123
+      max-pool-size: 20
