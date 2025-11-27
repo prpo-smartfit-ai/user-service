@@ -2,32 +2,34 @@ package com.smartfitai.services;
 
 import com.smartfitai.models.User;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import org.mindrot.jbcrypt.BCrypt;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.security.MessageDigest;
-import java.util.*;
 
 @ApplicationScoped
 public class UserService {
     
     @PersistenceContext
     private EntityManager em;
+    
+    @Inject
+    private JwtService jwtService;
 
     @Transactional
     public User createUser(String email, String password, String firstName, String lastName) {
         String hashedPassword = hashPassword(password);
-        
+
         User user = new User();
         user.setEmail(email);
         user.setPasswordHash(hashedPassword);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        
+
         em.persist(user);
         em.flush();
-        
+
         return user;
     }
 
@@ -40,13 +42,21 @@ public class UserService {
             return null;
         }
     }
+    
+    public User findById(Long id) {
+        try {
+            return em.find(User.class, id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public boolean verifyPassword(User user, String password) {
         return BCrypt.checkpw(password, user.getPasswordHash());
     }
 
     public String generateToken(User user) {
-        return "token_" + user.getId() + "_" + UUID.randomUUID().toString();
+        return jwtService.generateToken(user.getId(), user.getEmail());
     }
 
     private String hashPassword(String password) {

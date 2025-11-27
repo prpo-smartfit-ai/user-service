@@ -1,5 +1,6 @@
 package com.smartfitai.api.v1.resources;
 
+import com.smartfitai.config.Secured;
 import com.smartfitai.models.User;
 import com.smartfitai.models.dto.*;
 import com.smartfitai.services.UserService;
@@ -7,6 +8,8 @@ import com.smartfitai.services.UserService;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
@@ -20,6 +23,9 @@ public class UserResource {
 
     @Inject
     private UserService userService;
+
+    @Context
+    private ContainerRequestContext requestContext;
 
     @GET
     @Path("/health")
@@ -49,9 +55,13 @@ public class UserResource {
                     request.getFirstName(),
                     request.getLastName());
 
+            // Generate JWT token
+            String token = userService.generateToken(user);
             AuthResponse.UserDto userDto = new AuthResponse.UserDto(user);
+            AuthResponse authResponse = new AuthResponse(userDto, token);
+
             return Response.status(Response.Status.CREATED)
-                    .entity(new ApiResponse<>(userDto, "User registered successfully"))
+                    .entity(new ApiResponse<>(authResponse, "User registered successfully"))
                     .build();
 
         } catch (Exception e) {
