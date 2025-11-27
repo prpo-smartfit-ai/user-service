@@ -1,6 +1,7 @@
 package com.smartfitai.models;
 
 import javax.persistence.*;
+import javax.json.bind.annotation.JsonbTransient;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class User {
     private String email;
     
     @Column(nullable = false)
+    @JsonbTransient
     private String passwordHash;
     
     // Basic Info
@@ -85,5 +87,158 @@ public class User {
     
     public enum FitnessGoal {
         WEIGHT_LOSS, MUSCLE_GAIN, ENDURANCE, MAINTENANCE
+    }
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Double getCurrentWeight() {
+        return currentWeight;
+    }
+
+    public void setCurrentWeight(Double currentWeight) {
+        this.currentWeight = currentWeight;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public FitnessLevel getFitnessLevel() {
+        return fitnessLevel;
+    }
+
+    public void setFitnessLevel(FitnessLevel fitnessLevel) {
+        this.fitnessLevel = fitnessLevel;
+    }
+
+    public FitnessGoal getPrimaryGoal() {
+        return primaryGoal;
+    }
+
+    public void setPrimaryGoal(FitnessGoal primaryGoal) {
+        this.primaryGoal = primaryGoal;
+    }
+
+    public Integer getPreferredDaysPerWeek() {
+        return preferredDaysPerWeek;
+    }
+
+    public void setPreferredDaysPerWeek(Integer preferredDaysPerWeek) {
+        this.preferredDaysPerWeek = preferredDaysPerWeek;
+    }
+
+    public Integer getPreferredSessionDuration() {
+        return preferredSessionDuration;
+    }
+
+    public void setPreferredSessionDuration(Integer preferredSessionDuration) {
+        this.preferredSessionDuration = preferredSessionDuration;
+    }
+
+    public String getAvailableEquipment() {
+        return availableEquipment;
+    }
+
+    public void setAvailableEquipment(String availableEquipment) {
+        this.availableEquipment = availableEquipment;
+    }
+
+    public Integer getTotalWorkouts() {
+        return totalWorkouts;
+    }
+
+    public void setTotalWorkouts(Integer totalWorkouts) {
+        this.totalWorkouts = totalWorkouts;
+    }
+
+    public Double getTotalHours() {
+        return totalHours;
+    }
+
+    public void setTotalHours(Double totalHours) {
+        this.totalHours = totalHours;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public List<Progress> getProgressRecords() {
+        return progressRecords;
+    }
+
+    public void setProgressRecords(List<Progress> progressRecords) {
+        this.progressRecords = progressRecords;
     }
 }

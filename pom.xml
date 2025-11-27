@@ -62,6 +62,10 @@
             <artifactId>kumuluzee-jpa-eclipselink</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-jta-narayana</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.1</version>
