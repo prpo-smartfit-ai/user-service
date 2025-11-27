@@ -3,6 +3,7 @@ package com.smartfitai.services;
 import com.smartfitai.models.User;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
+import org.mindrot.jbcrypt.BCrypt;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.security.MessageDigest;
@@ -41,8 +42,7 @@ public class UserService {
     }
 
     public boolean verifyPassword(User user, String password) {
-        String hashedPassword = hashPassword(password);
-        return user.getPasswordHash().equals(hashedPassword);
+        return BCrypt.checkpw(password, user.getPasswordHash());
     }
 
     public String generateToken(User user) {
@@ -50,18 +50,6 @@ public class UserService {
     }
 
     private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (Exception e) {
-            throw new RuntimeException("Error hashing password", e);
-        }
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }
