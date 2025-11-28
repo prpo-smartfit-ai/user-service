@@ -121,6 +121,43 @@ public class UserResource {
         }
     }
     
+    @PUT
+    @Path("/profile")
+    @Secured
+    public Response updateProfile(ProfileUpdateRequest request) {
+        try {
+            // Get userId from the request context
+            Long userId = (Long) requestContext.getProperty("userId");
+            
+            User user = userService.findById(userId);
+            if (user == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity(new ApiResponse<>(null, "User not found"))
+                        .build();
+            }
+            
+            // Update user profile fields
+            if (request.getAge() != null) user.setAge(request.getAge());
+            if (request.getHeight() != null) user.setHeight(request.getHeight());
+            if (request.getCurrentWeight() != null) user.setCurrentWeight(request.getCurrentWeight());
+            if (request.getGender() != null) user.setGender(User.Gender.valueOf(request.getGender()));
+            if (request.getFitnessLevel() != null) user.setFitnessLevel(User.FitnessLevel.valueOf(request.getFitnessLevel()));
+            if (request.getPrimaryGoal() != null) user.setPrimaryGoal(User.FitnessGoal.valueOf(request.getPrimaryGoal()));
+            if (request.getPreferredDaysPerWeek() != null) user.setPreferredDaysPerWeek(request.getPreferredDaysPerWeek());
+            if (request.getPreferredSessionDuration() != null) user.setPreferredSessionDuration(request.getPreferredSessionDuration());
+            
+            userService.updateUser(user);
+            
+            UserProfileResponse profile = new UserProfileResponse(user);
+            return Response.ok(new ApiResponse<>(profile, "Profile updated successfully")).build();
+            
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ApiResponse<>(null, "Failed to update profile: " + e.getMessage()))
+                    .build();
+        }
+    }
+    
     @GET
     @Path("/me")
     @Secured

@@ -59,6 +59,11 @@ public class UserService {
         return jwtService.generateToken(user.getId(), user.getEmail());
     }
 
+    @Transactional
+    public User updateUser(User user) {
+        return em.merge(user);
+    }
+
     private String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
