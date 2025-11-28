@@ -23,7 +23,7 @@ public class UserResource {
 
     @Inject
     private UserService userService;
-
+    
     @Context
     private ContainerRequestContext requestContext;
 
@@ -92,6 +92,56 @@ public class UserResource {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new ApiResponse<>(null, "Login failed: " + e.getMessage()))
+                    .build();
+        }
+    }
+    
+    @GET
+    @Path("/profile")
+    @Secured
+    public Response getProfile() {
+        try {
+            // Get userId from the request context (set by JwtAuthenticationFilter)
+            Long userId = (Long) requestContext.getProperty("userId");
+            
+            User user = userService.findById(userId);
+            if (user == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity(new ApiResponse<>(null, "User not found"))
+                        .build();
+            }
+            
+            UserProfileResponse profile = new UserProfileResponse(user);
+            return Response.ok(new ApiResponse<>(profile, "Profile retrieved successfully")).build();
+            
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ApiResponse<>(null, "Failed to retrieve profile: " + e.getMessage()))
+                    .build();
+        }
+    }
+    
+    @GET
+    @Path("/me")
+    @Secured
+    public Response getCurrentUser() {
+        try {
+            // Get userId from the request context (set by JwtAuthenticationFilter)
+            Long userId = (Long) requestContext.getProperty("userId");
+            
+            User user = userService.findById(userId);
+            if (user == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity(new ApiResponse<>(null, "User not found"))
+                        .build();
+            }
+            
+            AuthResponse.UserDto userDto = new AuthResponse.UserDto(user);
+            return Response.ok(new ApiResponse<>(userDto, "User retrieved successfully")).build();
+            
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ApiResponse<>(null, "Failed to retrieve user: " + e.getMessage()))
                     .build();
         }
     }
