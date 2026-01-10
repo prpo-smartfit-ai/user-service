@@ -17,8 +17,8 @@ import javax.ws.rs.core.Application;
         description = "API for user management, authentication, and profile tracking in SmartFit AI application."
     ),
     servers = {
-        @Server(url = "http://4.232.72.237/user-service/v1", description = "Staging Server"),
-        @Server(url = "http://localhost:8081/v1", description = "Local development server")
+        @Server(url = "http://4.232.72.237:8081/", description = "Production server"),
+        @Server(url = "http://localhost:8081/", description = "Local development server")
     }
 )
 public class UserApplication extends Application {
