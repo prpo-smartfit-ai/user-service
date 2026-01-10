@@ -4,6 +4,13 @@ import com.smartfitai.config.Secured;
 import com.smartfitai.models.User;
 import com.smartfitai.models.dto.*;
 import com.smartfitai.services.UserService;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -19,6 +26,7 @@ import java.util.Map;
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Tag(name = "Users", description = "Operations related to user management and profiles")
 public class UserResource {
 
     @Inject
@@ -29,6 +37,8 @@ public class UserResource {
 
     @GET
     @Path("/health")
+    @Operation(summary = "Health Check", description = "Check if the user service is running.")
+    @APIResponse(responseCode = "200", description = "Service is up")
     public Response healthCheck() {
         Map<String, String> health = new HashMap<>();
         health.put("status", "UP");
@@ -38,7 +48,16 @@ public class UserResource {
 
     @POST
     @Path("/register")
-    public Response register(RegisterRequest request) {
+    @Operation(summary = "Register User", description = "Register a new user in the system.")
+    @APIResponses({
+        @APIResponse(responseCode = "201", description = "User registered successfully", 
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+        @APIResponse(responseCode = "409", description = "Email already registered"),
+        @APIResponse(responseCode = "500", description = "Internal server error")
+    })
+    public Response register(@RequestBody(description = "User registration details", required = true,
+                                         content = @Content(schema = @Schema(implementation = RegisterRequest.class)))
+                             RegisterRequest request) {
         try {
             // Check if user already exists
             User existingUser = userService.findByEmail(request.getEmail());
@@ -73,7 +92,16 @@ public class UserResource {
 
     @POST
     @Path("/login")
-    public Response login(LoginRequest request) {
+    @Operation(summary = "Login User", description = "Authenticate a user and return a JWT token.")
+    @APIResponses({
+        @APIResponse(responseCode = "200", description = "Login successful", 
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+        @APIResponse(responseCode = "401", description = "Invalid credentials"),
+        @APIResponse(responseCode = "500", description = "Internal server error")
+    })
+    public Response login(@RequestBody(description = "Login credentials", required = true,
+                                      content = @Content(schema = @Schema(implementation = LoginRequest.class)))
+                          LoginRequest request) {
         try {
             User user = userService.findByEmail(request.getEmail());
 
@@ -99,6 +127,13 @@ public class UserResource {
     @GET
     @Path("/profile")
     @Secured
+    @Operation(summary = "Get User Profile", description = "Retrieve current user's profile information.")
+    @APIResponses({
+        @APIResponse(responseCode = "200", description = "Profile retrieved successfully"),
+        @APIResponse(responseCode = "401", description = "Unauthorized"),
+        @APIResponse(responseCode = "404", description = "User not found"),
+        @APIResponse(responseCode = "500", description = "Internal server error")
+    })
     public Response getProfile() {
         try {
             // Get userId from the request context (set by JwtAuthenticationFilter)
@@ -124,7 +159,16 @@ public class UserResource {
     @PUT
     @Path("/profile")
     @Secured
-    public Response updateProfile(ProfileUpdateRequest request) {
+    @Operation(summary = "Update User Profile", description = "Update current user's physical profile and goals.")
+    @APIResponses({
+        @APIResponse(responseCode = "200", description = "Profile updated successfully"),
+        @APIResponse(responseCode = "401", description = "Unauthorized"),
+        @APIResponse(responseCode = "404", description = "User not found"),
+        @APIResponse(responseCode = "500", description = "Internal server error")
+    })
+    public Response updateProfile(@RequestBody(description = "Profile update data", required = true,
+                                             content = @Content(schema = @Schema(implementation = ProfileUpdateRequest.class)))
+                                  ProfileUpdateRequest request) {
         try {
             // Get userId from the request context
             Long userId = (Long) requestContext.getProperty("userId");
@@ -165,6 +209,8 @@ public class UserResource {
     @GET
     @Path("/me")
     @Secured
+    @Operation(summary = "Get Current User", description = "Retrieve current authenticated user basic info.")
+    @APIResponse(responseCode = "200", description = "User retrieved successfully")
     public Response getCurrentUser() {
         try {
             // Get userId from the request context (set by JwtAuthenticationFilter)
