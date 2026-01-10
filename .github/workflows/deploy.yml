@@ -2,7 +2,7 @@ name: Build and Deploy User Service
 
 on:
   push:
-    branches: [ master, test-cicd ]
+    branches: [ master ]
 
 jobs:
   build-and-push:
