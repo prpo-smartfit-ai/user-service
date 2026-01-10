@@ -9,8 +9,6 @@
         <jta-data-source>jdbc/UserServiceDS</jta-data-source>
         
         <class>com.smartfitai.models.User</class>
-        <class>com.smartfitai.models.Friendship</class>
-        <class>com.smartfitai.models.Progress</class>
         
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="create"/>

@@ -3,8 +3,6 @@ package com.smartfitai.models;
 import javax.persistence.*;
 import javax.json.bind.annotation.JsonbTransient;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -61,10 +59,6 @@ public class User {
     private LocalDateTime createdAt;
     
     private LocalDateTime updatedAt;
-    
-    // Relationships
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Progress> progressRecords = new ArrayList<>();
     
     @PrePersist
     protected void onCreate() {
@@ -232,13 +226,5 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public List<Progress> getProgressRecords() {
-        return progressRecords;
-    }
-
-    public void setProgressRecords(List<Progress> progressRecords) {
-        this.progressRecords = progressRecords;
     }
 }
