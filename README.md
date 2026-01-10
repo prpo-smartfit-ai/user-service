@@ -42,7 +42,10 @@ Storitev bo dostopna na `http://localhost:8080`
 ## API
 
 - `GET /v1/users/health` - Preverjanje stanja storitve
-- `GET /v1/users` - Informacije o storitvi
+- `POST /v1/users/register` - Registracija novega uporabnika
+- `POST /v1/users/login` - Prijava uporabnika
+- `GET /v1/users/profile` - Pridobitev profila uporabnika (zahteva JWT)
+- `PUT /v1/users/profile` - Posodobitev profila uporabnika (zahteva JWT)
 
 ## Povezani repozitoriji
 
