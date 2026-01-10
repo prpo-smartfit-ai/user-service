@@ -1,6 +1,8 @@
 package com.smartfitai.models.dto;
 
 public class ProfileUpdateRequest {
+    private String firstName;
+    private String lastName;
     private Integer age;
     private Double height;
     private Double currentWeight;
@@ -9,6 +11,8 @@ public class ProfileUpdateRequest {
     private String primaryGoal;
     private Integer preferredDaysPerWeek;
     private Integer preferredSessionDuration;
+    private Integer totalWorkouts;
+    private Double totalHours;
 
     // default constructor
     public ProfileUpdateRequest() {}
@@ -27,6 +31,12 @@ public class ProfileUpdateRequest {
     }
 
     // getters and setters
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
     public Integer getAge() { return age; }
     public void setAge(Integer age) { this.age = age; }
 
@@ -50,4 +60,10 @@ public class ProfileUpdateRequest {
 
     public Integer getPreferredSessionDuration() { return preferredSessionDuration; }
     public void setPreferredSessionDuration(Integer preferredSessionDuration) { this.preferredSessionDuration = preferredSessionDuration; }
+
+    public Integer getTotalWorkouts() { return totalWorkouts; }
+    public void setTotalWorkouts(Integer totalWorkouts) { this.totalWorkouts = totalWorkouts; }
+
+    public Double getTotalHours() { return totalHours; }
+    public void setTotalHours(Double totalHours) { this.totalHours = totalHours; }
 }

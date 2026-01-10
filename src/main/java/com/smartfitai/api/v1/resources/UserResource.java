@@ -137,6 +137,8 @@ public class UserResource {
             }
             
             // Update user profile fields
+            if (request.getFirstName() != null) user.setFirstName(request.getFirstName());
+            if (request.getLastName() != null) user.setLastName(request.getLastName());
             if (request.getAge() != null) user.setAge(request.getAge());
             if (request.getHeight() != null) user.setHeight(request.getHeight());
             if (request.getCurrentWeight() != null) user.setCurrentWeight(request.getCurrentWeight());
@@ -145,6 +147,8 @@ public class UserResource {
             if (request.getPrimaryGoal() != null) user.setPrimaryGoal(User.FitnessGoal.valueOf(request.getPrimaryGoal()));
             if (request.getPreferredDaysPerWeek() != null) user.setPreferredDaysPerWeek(request.getPreferredDaysPerWeek());
             if (request.getPreferredSessionDuration() != null) user.setPreferredSessionDuration(request.getPreferredSessionDuration());
+            if (request.getTotalWorkouts() != null) user.setTotalWorkouts(request.getTotalWorkouts());
+            if (request.getTotalHours() != null) user.setTotalHours(request.getTotalHours());
             
             userService.updateUser(user);
             
